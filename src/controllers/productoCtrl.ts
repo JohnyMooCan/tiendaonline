@@ -31,7 +31,7 @@ export const getProducto = async ( request: Request,response:  Response) => {
             idProducto: busqueda
         }
     }
-        const producto = await Producto.findAll((busqueda && busqueda != undefined) ? where : {});
+        const producto = await Producto.findOne((busqueda && busqueda != undefined) ? where : {});
         response.json(producto);
     }
     catch(error){

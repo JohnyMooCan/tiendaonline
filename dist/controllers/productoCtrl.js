@@ -39,7 +39,7 @@ const getProducto = (request, response) => __awaiter(void 0, void 0, void 0, fun
                 idProducto: busqueda
             }
         };
-        const producto = yield producto_1.Producto.findAll((busqueda && busqueda != undefined) ? where : {});
+        const producto = yield producto_1.Producto.findOne((busqueda && busqueda != undefined) ? where : {});
         response.json(producto);
     }
     catch (error) {
