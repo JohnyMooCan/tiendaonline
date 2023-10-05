@@ -28,6 +28,12 @@ exports.getProductos = getProductos;
 const getProducto = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { busqueda } = request.body;
+        //Se valida que el request sea un numero
+        if (!busqueda || isNaN(+busqueda) || busqueda <= 0) {
+            return response.status(400).json({
+                msg: 'Parámetro no valido'
+            });
+        }
         const where = {
             where: {
                 idProducto: busqueda

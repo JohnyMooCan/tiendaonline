@@ -20,6 +20,12 @@ export const getProductos = async ( request: Request,response:  Response) => {
 export const getProducto = async ( request: Request,response:  Response) => {
     try{
     const { busqueda } = request.body;
+    //Se valida que el request sea un numero
+    if(!busqueda || isNaN(+busqueda) || busqueda <=0 ){
+       return response.status(400).json({
+            msg: 'Parámetro no valido'
+        });
+    }
     const where = {
         where: {
             idProducto: busqueda
