@@ -9,7 +9,7 @@
   "keywords": [
     "heroku"
   ],
-  "author": "",
+  "author": "ITI. Johny Moo",
   "license": "ISC",
   "dependencies": {
     "cors": "2.8.5",

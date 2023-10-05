@@ -6,17 +6,17 @@ import { Usuario } from "../models/usuario";
 export const addUsuario = async ( request: Request,response:  Response) => {
     
     //console.log(request.body);
-    const { nombre, password} = request.body;
+    const { usuario, nombre, apellidos, password} = request.body;
 
     const existe = await Usuario.findOne({
         where: {
-            nombre: nombre
+            usuario: usuario
         }
     })
 
     if(existe){
         return response.status(400).json({
-            msg:'El usuario '+ nombre + ' ya existe.'
+            msg:'El usuario '+ usuario + ' ya existe.'
         })
     }
     
@@ -27,12 +27,14 @@ export const addUsuario = async ( request: Request,response:  Response) => {
     try{
         await Usuario.create(
             {
+                usuario: usuario,
                 nombre: nombre,
+                apellidos: apellidos,
                 password: pwd
         })
 
         response.json({
-            msg: 'El usuario '+ nombre + ' se ha creado exitosamente.'
+            msg: 'El usuario '+ usuario + ' se ha creado exitosamente.'
 
         });
     }
@@ -44,14 +46,36 @@ export const addUsuario = async ( request: Request,response:  Response) => {
     
 
 }
+export const getUsuario = async ( request: Request,response:  Response) => {
 
-export const login = async ( request: Request,response:  Response) => {
+    const { value } = request.body;
     
+    const usuario: any = await Usuario.findOne({
+        where: {
+            idUsuario: value
+        }
+    })
+
+    if(!usuario){
+        return response.status(400).json({
+            msg:'El usuario no existe.'
+        })
+    }
+
+    response.json({
+        val_1: usuario.getDataValue('nombre'),
+        val_2: usuario.getDataValue('usuario'),
+        val_3: usuario.getDataValue('apellidos') 
+    })
+
+}
+export const login = async ( request: Request,response:  Response) => {
+    //Se recibe el nodo nombre como usuario para confundir a intruzos
     const { nombre, password } = request.body;
     
     const usuario: any = await Usuario.findOne({
         where: {
-            nombre: nombre
+            usuario: nombre 
         }
     })
 
@@ -70,7 +94,7 @@ export const login = async ( request: Request,response:  Response) => {
 
     //Token para el inicio de sesion
     const token = Jwt.sign({
-        nombre: nombre
+        usuario: usuario
     },process.env.KEY || 'tiendajohnymoo')
 
     response.json({

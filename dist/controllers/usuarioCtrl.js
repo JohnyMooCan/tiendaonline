@@ -12,21 +12,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.login = exports.addUsuario = void 0;
+exports.login = exports.getUsuario = exports.addUsuario = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const usuario_1 = require("../models/usuario");
 const addUsuario = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     //console.log(request.body);
-    const { nombre, password } = request.body;
+    const { usuario, nombre, apellidos, password } = request.body;
     const existe = yield usuario_1.Usuario.findOne({
         where: {
-            nombre: nombre
+            usuario: usuario
         }
     });
     if (existe) {
         return response.status(400).json({
-            msg: 'El usuario ' + nombre + ' ya existe.'
+            msg: 'El usuario ' + usuario + ' ya existe.'
         });
     }
     console.log("continue flujo");
@@ -35,11 +35,13 @@ const addUsuario = (request, response) => __awaiter(void 0, void 0, void 0, func
     //console.log(password);
     try {
         yield usuario_1.Usuario.create({
+            usuario: usuario,
             nombre: nombre,
+            apellidos: apellidos,
             password: pwd
         });
         response.json({
-            msg: 'El usuario ' + nombre + ' se ha creado exitosamente.'
+            msg: 'El usuario ' + usuario + ' se ha creado exitosamente.'
         });
     }
     catch (_a) {
@@ -49,11 +51,31 @@ const addUsuario = (request, response) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.addUsuario = addUsuario;
+const getUsuario = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    const { value } = request.body;
+    const usuario = yield usuario_1.Usuario.findOne({
+        where: {
+            idUsuario: value
+        }
+    });
+    if (!usuario) {
+        return response.status(400).json({
+            msg: 'El usuario no existe.'
+        });
+    }
+    response.json({
+        val_1: usuario.getDataValue('nombre'),
+        val_2: usuario.getDataValue('usuario'),
+        val_3: usuario.getDataValue('apellidos')
+    });
+});
+exports.getUsuario = getUsuario;
 const login = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    //Se recibe el nodo nombre como usuario para confundir a intruzos
     const { nombre, password } = request.body;
     const usuario = yield usuario_1.Usuario.findOne({
         where: {
-            nombre: nombre
+            usuario: nombre
         }
     });
     if (!usuario) {
@@ -69,7 +91,7 @@ const login = (request, response) => __awaiter(void 0, void 0, void 0, function*
     }
     //Token para el inicio de sesion
     const token = jsonwebtoken_1.default.sign({
-        nombre: nombre
+        usuario: usuario
     }, process.env.KEY || 'tiendajohnymoo');
     response.json({
         token: token,

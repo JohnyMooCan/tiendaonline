@@ -19,5 +19,8 @@ export const Producto = sequelize.define('Producto',{
     },
     imagen:{
         type: DataTypes.STRING
+    },
+    calificacion: {
+        type: DataTypes.DOUBLE
     }
 })

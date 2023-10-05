@@ -13,10 +13,16 @@ exports.Usuario = conexion_1.default.define('Usuario', {
         primaryKey: true,
         autoIncrement: true
     },
-    nombre: {
+    usuario: {
         type: sequelize_1.DataTypes.STRING,
         unique: true,
         allowNull: false
+    },
+    nombre: {
+        type: sequelize_1.DataTypes.STRING,
+    },
+    apellidos: {
+        type: sequelize_1.DataTypes.STRING
     },
     password: {
         type: sequelize_1.DataTypes.STRING,

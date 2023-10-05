@@ -24,5 +24,8 @@ exports.Producto = conexion_1.default.define('Producto', {
     },
     imagen: {
         type: sequelize_1.DataTypes.STRING
+    },
+    calificacion: {
+        type: sequelize_1.DataTypes.DOUBLE
     }
 });
