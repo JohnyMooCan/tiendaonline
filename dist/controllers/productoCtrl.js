@@ -26,12 +26,20 @@ const getProductos = (request, response) => __awaiter(void 0, void 0, void 0, fu
 });
 exports.getProductos = getProductos;
 const getProducto = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
-    const { busqueda } = request.body;
-    const where = {
-        where: {
-            idProducto: busqueda
-        }
-    };
-    const lstProductos = yield producto_1.Producto.findAll((busqueda && busqueda != undefined) ? where : {});
+    try {
+        const { busqueda } = request.body;
+        const where = {
+            where: {
+                idProducto: busqueda
+            }
+        };
+        const producto = yield producto_1.Producto.findAll((busqueda && busqueda != undefined) ? where : {});
+        response.json(producto);
+    }
+    catch (error) {
+        response.status(400).json({
+            msg: 'Error al obtener información del producto'
+        });
+    }
 });
 exports.getProducto = getProducto;
