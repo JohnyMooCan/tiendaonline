@@ -18,12 +18,20 @@ export const getProductos = async ( request: Request,response:  Response) => {
 }
 
 export const getProducto = async ( request: Request,response:  Response) => {
-
+    try{
     const { busqueda } = request.body;
     const where = {
         where: {
             idProducto: busqueda
         }
     }
-    const lstProductos = await Producto.findAll((busqueda && busqueda != undefined) ? where : {});
+        const producto = await Producto.findAll((busqueda && busqueda != undefined) ? where : {});
+        response.json(producto);
+    }
+    catch(error){
+        response.status(400).json({
+            msg: 'Error al obtener información del producto'
+        });
+
+    }
 }
