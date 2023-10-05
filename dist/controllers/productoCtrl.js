@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProductos = void 0;
+exports.getProducto = exports.getProductos = void 0;
 const producto_1 = require("../models/producto");
 const { Op } = require("sequelize");
 const getProductos = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
@@ -25,3 +25,13 @@ const getProductos = (request, response) => __awaiter(void 0, void 0, void 0, fu
     response.json(lstProductos);
 });
 exports.getProductos = getProductos;
+const getProducto = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    const { busqueda } = request.body;
+    const where = {
+        where: {
+            idProducto: busqueda
+        }
+    };
+    const lstProductos = yield producto_1.Producto.findAll((busqueda && busqueda != undefined) ? where : {});
+});
+exports.getProducto = getProducto;

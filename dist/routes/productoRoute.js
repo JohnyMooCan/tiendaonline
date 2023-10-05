@@ -8,4 +8,5 @@ const productoCtrl_1 = require("../controllers/productoCtrl");
 const validatoken_1 = __importDefault(require("./validatoken"));
 const router = (0, express_1.Router)();
 router.post('/', validatoken_1.default, productoCtrl_1.getProductos);
+router.post('/detalle', validatoken_1.default, productoCtrl_1.getProducto);
 exports.default = router;
